@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AdaptIQ — Adaptive Diagnostic Engine</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #22263a;
+      --border: #2e3250;
+      --primary: #6c63ff;
+      --primary-dark: #5a52e0;
+      --success: #22c55e;
+      --error: #ef4444;
+      --warning: #f59e0b;
+      --text: #e8eaf6;
+      --text-muted: #8890b5;
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ── Layout ── */
+    #app {
+      width: 100%;
+      max-width: 760px;
+      padding: 24px 16px 64px;
+    }
+
+    /* ── Header ── */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 20px 0 28px;
+    }
+    .logo {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, var(--primary), #a78bfa);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .brand { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+    .brand span { color: var(--primary); }
+
+    /* ── Card ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+    }
+
+    /* ── Screen visibility ── */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* ──────────────────────────────────────────
+       SCREEN 1: HOME
+    ────────────────────────────────────────── */
+    .home-hero {
+      text-align: center;
+      padding: 40px 0 32px;
+    }
+    .home-hero h1 {
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+    .home-hero h1 span { color: var(--primary); }
+    .home-hero p {
+      color: var(--text-muted);
+      font-size: 16px;
+      line-height: 1.6;
+      max-width: 480px;
+      margin: 0 auto 32px;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .feature-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .feature-card .icon { font-size: 28px; margin-bottom: 10px; }
+    .feature-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+    .feature-card p { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+    .start-form { max-width: 380px; margin: 0 auto; }
+    .input-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .input {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-size: 16px;
+      padding: 14px 18px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .input:focus { border-color: var(--primary); }
+    .input::placeholder { color: var(--text-muted); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 15px 24px;
+      border-radius: var(--radius-sm);
+      border: none;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 14px;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .btn-secondary {
+      background: var(--surface2);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
+
+    /* ──────────────────────────────────────────
+       SCREEN 2: QUESTION
+    ────────────────────────────────────────── */
+    .progress-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .progress-label { font-size: 13px; color: var(--text-muted); }
+    .progress-count { font-size: 14px; font-weight: 700; }
+
+    .progress-bar-wrap {
+      background: var(--surface2);
+      border-radius: 99px;
+      height: 6px;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), #a78bfa);
+      border-radius: 99px;
+      transition: width 0.5s ease;
+    }
+
+    /* Ability meter */
+    .ability-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      margin-bottom: 28px;
+    }
+    .ability-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+    .ability-track {
+      flex: 1;
+      height: 8px;
+      background: var(--surface);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .ability-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #ef4444, #f59e0b, #22c55e);
+      transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .ability-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary);
+      min-width: 36px;
+      text-align: right;
+    }
+
+    /* Question meta */
+    .q-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 99px;
+    }
+    .badge-topic {
+      background: rgba(108, 99, 255, 0.15);
+      color: #a78bfa;
+      border: 1px solid rgba(108, 99, 255, 0.25);
+    }
+    .badge-diff {
+      background: rgba(245, 158, 11, 0.12);
+      color: var(--warning);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+
+    .q-text {
+      font-size: 18px;
+      line-height: 1.65;
+      font-weight: 500;
+      margin-bottom: 28px;
+      color: var(--text);
+    }
+
+    /* Options */
+    .options { display: flex; flex-direction: column; gap: 12px; }
+    .option-btn {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: var(--surface2);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px 20px;
+      cursor: pointer;
+      text-align: left;
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.5;
+      transition: all 0.18s;
+      width: 100%;
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--primary);
+      background: rgba(108, 99, 255, 0.08);
+    }
+    .option-btn.selected {
+      border-color: var(--primary);
+      background: rgba(108, 99, 255, 0.12);
+    }
+    .option-btn:disabled { cursor: not-allowed; }
+    .option-btn.correct {
+      border-color: var(--success);
+      background: rgba(34, 197, 94, 0.1);
+    }
+    .option-btn.wrong {
+      border-color: var(--error);
+      background: rgba(239, 68, 68, 0.1);
+    }
+    .option-key {
+      min-width: 28px; height: 28px;
+      border-radius: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+      transition: all 0.18s;
+    }
+    .option-btn.selected .option-key {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+    .option-btn.correct .option-key {
+      background: var(--success);
+      border-color: var(--success);
+      color: #fff;
+    }
+    .option-btn.wrong .option-key {
+      background: var(--error);
+      border-color: var(--error);
+      color: #fff;
+    }
+
+    .submit-row {
+      margin-top: 24px;
+    }
+
+    /* ──────────────────────────────────────────
+       FEEDBACK PANEL
+    ────────────────────────────────────────── */
+    .feedback-panel {
+      margin-top: 20px;
+      border-radius: var(--radius-sm);
+      padding: 20px;
+      animation: slideUp 0.3s ease;
+    }
+    .feedback-panel.correct-fb {
+      background: rgba(34, 197, 94, 0.08);
+      border: 1px solid rgba(34, 197, 94, 0.25);
+    }
+    .feedback-panel.wrong-fb {
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+    .feedback-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .feedback-icon { font-size: 20px; }
+    .feedback-title { font-size: 15px; font-weight: 700; }
+    .feedback-correct-label { color: var(--success); }
+    .feedback-wrong-label { color: var(--error); }
+    .feedback-explanation {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .ability-delta {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 99px;
+      background: rgba(108, 99, 255, 0.12);
+      color: #a78bfa;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ──────────────────────────────────────────
+       SCREEN 3: STUDY PLAN (milestone at Q10)
+    ────────────────────────────────────────── */
+    .milestone-header {
+      text-align: center;
+      padding: 24px 0 20px;
+    }
+    .milestone-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(108, 99, 255, 0.15);
+      border: 1px solid rgba(108, 99, 255, 0.3);
+      color: #a78bfa;
+      border-radius: 99px;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 6px 16px;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .milestone-header h2 {
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .milestone-header p { color: var(--text-muted); font-size: 15px; }
+
+    .assessment-box {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 18px 20px;
+      margin: 24px 0;
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--text);
+      font-style: italic;
+    }
+
+    .study-steps { display: flex; flex-direction: column; gap: 16px; margin-bottom: 28px; }
+    .study-step {
+      display: flex;
+      gap: 16px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 20px;
+    }
+    .step-num {
+      min-width: 36px; height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), #a78bfa);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 800;
+      flex-shrink: 0;
+    }
+    .step-content {}
+    .step-focus {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .step-action {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+    .resource-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 99px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: rgba(108, 99, 255, 0.1);
+      color: var(--primary);
+      border: 1px solid rgba(108, 99, 255, 0.2);
+    }
+
+    /* ──────────────────────────────────────────
+       SCREEN 4: COMPLETE
+    ────────────────────────────────────────── */
+    .complete-hero {
+      text-align: center;
+      padding: 32px 0 28px;
+    }
+    .complete-icon { font-size: 64px; margin-bottom: 16px; }
+    .complete-hero h2 {
+      font-size: 30px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .complete-hero p { color: var(--text-muted); font-size: 15px; }
+
+    .final-score-ring {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      margin: 28px 0;
+    }
+    .ring-wrap {
+      position: relative;
+      width: 140px; height: 140px;
+    }
+    .ring-wrap svg {
+      transform: rotate(-90deg);
+      width: 140px; height: 140px;
+    }
+    .ring-bg { fill: none; stroke: var(--surface2); stroke-width: 10; }
+    .ring-fill {
+      fill: none;
+      stroke: url(#ringGrad);
+      stroke-width: 10;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .ring-label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .ring-value {
+      font-size: 30px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1;
+    }
+    .ring-sub { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .stat-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 18px 14px;
+      text-align: center;
+    }
+    .stat-value { font-size: 26px; font-weight: 800; color: var(--primary); }
+    .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+    /* ── Loading spinner ── */
+    .spinner-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 32px;
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+    .spinner {
+      width: 24px; height: 24px;
+      border: 3px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Error toast ── */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #1e1b2e;
+      border: 1px solid var(--error);
+      color: var(--text);
+      padding: 14px 22px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      transition: transform 0.3s ease;
+      z-index: 999;
+      max-width: 400px;
+      text-align: center;
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* ── Divider ── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 28px 0;
+    }
+
+    @media (max-width: 520px) {
+      .features { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .card { padding: 22px 18px; }
+      .q-text { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="app">
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">🧠</div>
+    <div class="brand">Adapt<span>IQ</span></div>
+  </div>
+
+  <!-- ── SCREEN: HOME ── -->
+  <div id="screen-home" class="screen active">
+    <div class="home-hero">
+      <h1>Smarter <span>Adaptive</span> Testing</h1>
+      <p>AdaptIQ dynamically selects questions based on your ability level using Item Response Theory — no two tests are the same.</p>
+    </div>
+    <div class="features">
+      <div class="feature-card">
+        <div class="icon">📐</div>
+        <h3>IRT Algorithm</h3>
+        <p>Questions adapt in real-time using the Rasch model ability estimator.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">📊</div>
+        <h3>Live Ability Tracking</h3>
+        <p>Your proficiency score updates after every answer you submit.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🤖</div>
+        <h3>AI Study Plan</h3>
+        <p>Claude generates a personalized 3-step plan after 10 questions.</p>
+      </div>
+    </div>
+    <div class="start-form">
+      <label class="input-label" for="user-id">Student ID</label>
+      <input
+        id="user-id"
+        class="input"
+        type="text"
+        placeholder="e.g. student_001"
+        value="student_001"
+      />
+      <button class="btn btn-primary" id="btn-start">
+        <span>Start Adaptive Test</span>
+        <span>→</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── SCREEN: QUESTION ── -->
+  <div id="screen-question" class="screen">
+    <!-- Progress -->
+    <div class="progress-header">
+      <span class="progress-label">Question Progress</span>
+      <span class="progress-count" id="q-count">0 / 20</span>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progress-fill" style="width: 0%"></div>
+    </div>
+
+    <!-- Ability meter -->
+    <div class="ability-row">
+      <span class="ability-label">Ability θ</span>
+      <div class="ability-track">
+        <div class="ability-fill" id="ability-fill" style="width: 50%"></div>
+      </div>
+      <span class="ability-value" id="ability-value">0.50</span>
+    </div>
+
+    <!-- Question card -->
+    <div class="card" id="question-card">
+      <div id="q-loading" class="spinner-wrap">
+        <div class="spinner"></div>
+        <span>Loading question…</span>
+      </div>
+      <div id="q-content" style="display:none">
+        <div class="q-meta">
+          <span class="badge badge-topic" id="q-topic">Topic</span>
+          <span class="badge badge-diff" id="q-diff">Difficulty</span>
+        </div>
+        <div class="q-text" id="q-text"></div>
+        <div class="options" id="options-wrap"></div>
+        <div class="submit-row">
+          <button class="btn btn-primary" id="btn-submit" disabled>Submit Answer</button>
+        </div>
+        <div id="feedback-wrap"></div>
+        <div id="next-wrap" style="display:none; margin-top: 12px;">
+          <button class="btn btn-secondary" id="btn-next">Next Question →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SCREEN: STUDY PLAN (milestone) ── -->
+  <div id="screen-plan" class="screen">
+    <div class="milestone-header">
+      <div class="milestone-badge">🎉 Milestone — 10 Questions</div>
+      <h2>Your Personalized Study Plan</h2>
+      <p>Claude AI has analyzed your performance and crafted a plan to address your weaknesses.</p>
+    </div>
+
+    <div class="card">
+      <div id="plan-loading" class="spinner-wrap">
+        <div class="spinner"></div>
+        <span>Generating AI study plan…</span>
+      </div>
+      <div id="plan-content" style="display:none">
+        <div class="assessment-box" id="plan-assessment"></div>
+        <div class="study-steps" id="study-steps"></div>
+        <button class="btn btn-primary" id="btn-continue">Continue Test →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SCREEN: COMPLETE ── -->
+  <div id="screen-complete" class="screen">
+    <div class="complete-hero">
+      <div class="complete-icon">🏆</div>
+      <h2>Test Complete!</h2>
+      <p>Great effort. Here's your performance summary.</p>
+    </div>
+
+    <div class="card">
+      <div class="final-score-ring">
+        <div class="ring-wrap">
+          <svg viewBox="0 0 140 140">
+            <defs>
+              <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#6c63ff"/>
+                <stop offset="100%" stop-color="#a78bfa"/>
+              </linearGradient>
+            </defs>
+            <circle class="ring-bg" cx="70" cy="70" r="60"/>
+            <circle class="ring-fill" id="ring-fill" cx="70" cy="70" r="60"
+              stroke-dasharray="377"
+              stroke-dashoffset="377"/>
+          </svg>
+          <div class="ring-label">
+            <div class="ring-value" id="final-ability">—</div>
+            <div class="ring-sub">Ability θ</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="stat-correct">—</div>
+          <div class="stat-label">Correct</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-total">—</div>
+          <div class="stat-label">Total Questions</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-pct">—</div>
+          <div class="stat-label">Accuracy</div>
+        </div>
+      </div>
+
+      <div id="final-plan-wrap" style="display:none">
+        <div class="divider"></div>
+        <h3 style="margin-bottom: 16px; font-size: 17px; font-weight: 700;">🤖 AI Study Plan</h3>
+        <div class="assessment-box" id="final-assessment"></div>
+        <div class="study-steps" id="final-steps"></div>
+      </div>
+
+      <button class="btn btn-primary" id="btn-restart" style="margin-top: 8px;">Start New Test</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script>
+const API = '';  // same origin
+
+// ── State ────────────────────────────────
+let state = {
+  sessionId: null,
+  currentQuestion: null,
+  selectedAnswer: null,
+  ability: 0.5,
+  questionsAnswered: 0,
+  correct: 0,
+  total: 20,
+  studyPlan: null,
+  seenPlan: false,
+};
+
+// ── Helpers ───────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+async function apiFetch(path, options = {}) {
+  const res = await fetch(API + path, {
+    headers: { 'Content-Type': 'application/json' },
+    ...options,
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ detail: 'Unknown error' }));
+    throw new Error(err.detail || `HTTP ${res.status}`);
+  }
+  return res.json();
+}
+
+function diffLabel(d) {
+  if (d <= 0.3) return { label: 'Easy', color: '#22c55e' };
+  if (d <= 0.6) return { label: 'Medium', color: '#f59e0b' };
+  if (d <= 0.85) return { label: 'Hard', color: '#ef4444' };
+  return { label: 'Expert', color: '#a855f7' };
+}
+
+function resourceIcon(type) {
+  const map = {
+    practice_problems: '✏️',
+    reading: '📖',
+    video: '▶️',
+    flashcards: '🗂️',
+    mock_test: '📝',
+  };
+  return map[type] || '📌';
+}
+
+function updateAbilityUI(theta) {
+  state.ability = theta;
+  const pct = ((theta - 0.1) / 0.9) * 100;
+  document.getElementById('ability-fill').style.width = pct + '%';
+  document.getElementById('ability-value').textContent = theta.toFixed(2);
+}
+
+function renderStudyPlan(plan, stepsEl, assessEl) {
+  assessEl.textContent = '"' + plan.assessment + '"';
+  stepsEl.innerHTML = '';
+  plan.steps.forEach(step => {
+    const div = document.createElement('div');
+    div.className = 'study-step';
+    div.innerHTML = `
+      <div class="step-num">${step.step}</div>
+      <div class="step-content">
+        <div class="step-focus">${step.focus}</div>
+        <div class="step-action">${step.action}</div>
+        <span class="resource-tag">${resourceIcon(step.resource_type)} ${step.resource_type.replace(/_/g,' ')}</span>
+      </div>
+    `;
+    stepsEl.appendChild(div);
+  });
+}
+
+// ── START ─────────────────────────────────
+document.getElementById('btn-start').addEventListener('click', async () => {
+  const userId = document.getElementById('user-id').value.trim();
+  if (!userId) { showToast('Please enter a Student ID.'); return; }
+
+  const btn = document.getElementById('btn-start');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner" style="width:18px;height:18px;border-width:2px"></div> Creating session…';
+
+  try {
+    const data = await apiFetch('/api/v1/sessions/', {
+      method: 'POST',
+      body: JSON.stringify({ user_id: userId }),
+    });
+    state.sessionId = data.session_id;
+    state.questionsAnswered = 0;
+    state.correct = 0;
+    state.ability = 0.5;
+    state.studyPlan = null;
+    state.seenPlan = false;
+    updateAbilityUI(0.5);
+    showScreen('screen-question');
+    await loadNextQuestion();
+  } catch (e) {
+    showToast('Error: ' + e.message);
+    btn.disabled = false;
+    btn.innerHTML = '<span>Start Adaptive Test</span><span>→</span>';
+  }
+});
+
+// ── LOAD NEXT QUESTION ────────────────────
+async function loadNextQuestion() {
+  const qLoading = document.getElementById('q-loading');
+  const qContent = document.getElementById('q-content');
+  const submitBtn = document.getElementById('btn-submit');
+  const nextWrap = document.getElementById('next-wrap');
+  const fbWrap = document.getElementById('feedback-wrap');
+
+  qLoading.style.display = 'flex';
+  qContent.style.display = 'none';
+  fbWrap.innerHTML = '';
+  nextWrap.style.display = 'none';
+  submitBtn.disabled = true;
+  state.selectedAnswer = null;
+
+  try {
+    const q = await apiFetch(`/api/v1/sessions/${state.sessionId}/next`);
+    state.currentQuestion = q;
+
+    document.getElementById('q-text').textContent = q.text;
+
+    const topicEl = document.getElementById('q-topic');
+    topicEl.textContent = q.topic;
+
+    const diffEl = document.getElementById('q-diff');
+    const { label } = diffLabel(q.difficulty);
+    diffEl.textContent = label;
+
+    // Options
+    const wrap = document.getElementById('options-wrap');
+    wrap.innerHTML = '';
+    Object.entries(q.options).forEach(([key, val]) => {
+      const btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.dataset.key = key;
+      btn.innerHTML = `<span class="option-key">${key}</span><span>${val}</span>`;
+      btn.addEventListener('click', () => selectOption(key));
+      wrap.appendChild(btn);
+    });
+
+    qLoading.style.display = 'none';
+    qContent.style.display = 'block';
+  } catch (e) {
+    showToast('Failed to load question: ' + e.message);
+  }
+}
+
+function selectOption(key) {
+  state.selectedAnswer = key;
+  document.querySelectorAll('.option-btn').forEach(b => {
+    b.classList.toggle('selected', b.dataset.key === key);
+  });
+  document.getElementById('btn-submit').disabled = false;
+}
+
+// ── SUBMIT ────────────────────────────────
+document.getElementById('btn-submit').addEventListener('click', async () => {
+  if (!state.selectedAnswer) return;
+
+  const submitBtn = document.getElementById('btn-submit');
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<div class="spinner" style="width:16px;height:16px;border-width:2px"></div> Checking…';
+
+  // Disable all option buttons
+  document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+
+  try {
+    const res = await apiFetch(`/api/v1/sessions/${state.sessionId}/answer`, {
+      method: 'POST',
+      body: JSON.stringify({
+        question_id: state.currentQuestion.id,
+        answer: state.selectedAnswer,
+      }),
+    });
+
+    state.questionsAnswered = res.questions_answered;
+    if (res.is_correct) state.correct++;
+    if (res.study_plan) state.studyPlan = res.study_plan;
+
+    // Mark option visually
+    document.querySelectorAll('.option-btn').forEach(b => {
+      if (b.dataset.key === res.correct_answer) b.classList.add('correct');
+      else if (b.dataset.key === state.selectedAnswer && !res.is_correct) b.classList.add('wrong');
+    });
+
+    // Update ability
+    updateAbilityUI(res.ability_after);
+
+    // Update progress
+    document.getElementById('q-count').textContent = `${state.questionsAnswered} / ${state.total}`;
+    document.getElementById('progress-fill').style.width = ((state.questionsAnswered / state.total) * 100) + '%';
+
+    // Feedback
+    showFeedback(res);
+    submitBtn.style.display = 'none';
+    document.getElementById('next-wrap').style.display = 'block';
+
+    if (res.session_complete) {
+      document.getElementById('btn-next').textContent = 'See Results →';
+      document.getElementById('btn-next').onclick = () => showComplete(res);
+    } else if (state.questionsAnswered === 10 && !state.seenPlan) {
+      document.getElementById('btn-next').textContent = 'See Study Plan →';
+      document.getElementById('btn-next').onclick = () => showStudyPlan();
+    } else {
+      document.getElementById('btn-next').textContent = 'Next Question →';
+      document.getElementById('btn-next').onclick = async () => {
+        submitBtn.style.display = 'flex';
+        submitBtn.innerHTML = '<span>Submit Answer</span>';
+        await loadNextQuestion();
+      };
+    }
+  } catch (e) {
+    showToast('Error: ' + e.message);
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = '<span>Submit Answer</span>';
+  }
+});
+
+function showFeedback(res) {
+  const wrap = document.getElementById('feedback-wrap');
+  const isCorrect = res.is_correct;
+  const delta = (res.ability_after - res.ability_before).toFixed(3);
+  const deltaSign = delta >= 0 ? '+' : '';
+
+  wrap.innerHTML = `
+    <div class="feedback-panel ${isCorrect ? 'correct-fb' : 'wrong-fb'}">
+      <div class="feedback-header">
+        <span class="feedback-icon">${isCorrect ? '✅' : '❌'}</span>
+        <span class="feedback-title ${isCorrect ? 'feedback-correct-label' : 'feedback-wrong-label'}">
+          ${isCorrect ? 'Correct!' : 'Incorrect'}
+        </span>
+      </div>
+      <div class="feedback-explanation">${res.explanation}</div>
+      <div class="ability-delta">θ ${deltaSign}${delta} → ${res.ability_after.toFixed(2)}</div>
+    </div>
+  `;
+}
+
+// ── STUDY PLAN ────────────────────────────
+function showStudyPlan() {
+  state.seenPlan = true;
+  showScreen('screen-plan');
+
+  const planLoading = document.getElementById('plan-loading');
+  const planContent = document.getElementById('plan-content');
+
+  if (state.studyPlan) {
+    planLoading.style.display = 'none';
+    planContent.style.display = 'block';
+    renderStudyPlan(
+      state.studyPlan,
+      document.getElementById('study-steps'),
+      document.getElementById('plan-assessment')
+    );
+  } else {
+    // Poll for plan
+    const poll = setInterval(async () => {
+      try {
+        const sess = await apiFetch(`/api/v1/sessions/${state.sessionId}/status`);
+        if (sess.study_plan) {
+          state.studyPlan = sess.study_plan;
+          clearInterval(poll);
+          planLoading.style.display = 'none';
+          planContent.style.display = 'block';
+          renderStudyPlan(
+            sess.study_plan,
+            document.getElementById('study-steps'),
+            document.getElementById('plan-assessment')
+          );
+        }
+      } catch (_) {}
+    }, 2000);
+    setTimeout(() => clearInterval(poll), 30000);
+  }
+}
+
+document.getElementById('btn-continue').addEventListener('click', async () => {
+  showScreen('screen-question');
+  const submitBtn = document.getElementById('btn-submit');
+  submitBtn.style.display = 'flex';
+  submitBtn.innerHTML = '<span>Submit Answer</span>';
+  await loadNextQuestion();
+});
+
+// ── COMPLETE ──────────────────────────────
+async function showComplete(lastRes) {
+  showScreen('screen-complete');
+
+  // Fetch full session
+  let sess;
+  try {
+    sess = await apiFetch(`/api/v1/sessions/${state.sessionId}/status`);
+  } catch (_) {}
+
+  const finalAbility = lastRes ? lastRes.ability_after : state.ability;
+  const total = state.questionsAnswered;
+  const correct = state.correct;
+  const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
+
+  document.getElementById('final-ability').textContent = finalAbility.toFixed(2);
+  document.getElementById('stat-correct').textContent = correct;
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-pct').textContent = pct + '%';
+
+  // Ring animation
+  const circumference = 2 * Math.PI * 60; // 377
+  const fillRatio = (finalAbility - 0.1) / 0.9;
+  const offset = circumference * (1 - fillRatio);
+  setTimeout(() => {
+    document.getElementById('ring-fill').style.strokeDashoffset = offset;
+  }, 200);
+
+  // Study plan on complete screen
+  const plan = state.studyPlan || sess?.study_plan;
+  if (plan) {
+    document.getElementById('final-plan-wrap').style.display = 'block';
+    renderStudyPlan(plan, document.getElementById('final-steps'), document.getElementById('final-assessment'));
+  }
+}
+
+// ── RESTART ───────────────────────────────
+document.getElementById('btn-restart').addEventListener('click', () => {
+  state = {
+    sessionId: null, currentQuestion: null, selectedAnswer: null,
+    ability: 0.5, questionsAnswered: 0, correct: 0, total: 20,
+    studyPlan: null, seenPlan: false,
+  };
+  document.getElementById('q-count').textContent = '0 / 20';
+  document.getElementById('progress-fill').style.width = '0%';
+  updateAbilityUI(0.5);
+  const submitBtn = document.getElementById('btn-submit');
+  submitBtn.style.display = 'flex';
+  submitBtn.innerHTML = '<span>Submit Answer</span>';
+  const startBtn = document.getElementById('btn-start');
+  startBtn.disabled = false;
+  startBtn.innerHTML = '<span>Start Adaptive Test</span><span>→</span>';
+  showScreen('screen-home');
+});
+</script>
+</body>
+</html>

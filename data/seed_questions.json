@@ -1,0 +1,310 @@
+[
+  {
+    "text": "What is the value of x if 2x + 4 = 10?",
+    "options": {
+      "A": "2",
+      "B": "3",
+      "C": "4",
+      "D": "5"
+    },
+    "correct_answer": "B",
+    "difficulty": 0.1,
+    "topic": "Quantitative Reasoning",
+    "tags": ["algebra", "linear equations", "arithmetic"],
+    "explanation": "Subtract 4 from both sides: 2x = 6. Divide by 2: x = 3."
+  },
+  {
+    "text": "A train travels 120 miles in 2 hours. What is its average speed in miles per hour?",
+    "options": {
+      "A": "40 mph",
+      "B": "50 mph",
+      "C": "60 mph",
+      "D": "70 mph"
+    },
+    "correct_answer": "C",
+    "difficulty": 0.15,
+    "topic": "Quantitative Reasoning",
+    "tags": ["arithmetic", "rate", "distance"],
+    "explanation": "Speed = Distance / Time = 120 / 2 = 60 mph."
+  },
+  {
+    "text": "Which word is closest in meaning to 'BENEVOLENT'?",
+    "options": {
+      "A": "Hostile",
+      "B": "Charitable",
+      "C": "Indifferent",
+      "D": "Cautious"
+    },
+    "correct_answer": "B",
+    "difficulty": 0.2,
+    "topic": "Verbal Reasoning",
+    "tags": ["vocabulary", "synonyms", "adjectives"],
+    "explanation": "'Benevolent' means well-meaning and kindly. 'Charitable' is the closest synonym."
+  },
+  {
+    "text": "If x² = 16, what are the possible values of x?",
+    "options": {
+      "A": "4 only",
+      "B": "-4 only",
+      "C": "4 and -4",
+      "D": "2 and 8"
+    },
+    "correct_answer": "C",
+    "difficulty": 0.25,
+    "topic": "Quantitative Reasoning",
+    "tags": ["algebra", "quadratic", "square roots"],
+    "explanation": "x² = 16 gives x = ±√16 = ±4. Both 4 and -4 are valid solutions."
+  },
+  {
+    "text": "The passage suggests that the author views industrialization primarily as a _______ force.",
+    "options": {
+      "A": "wholly destructive",
+      "B": "uniformly beneficial",
+      "C": "complex and ambivalent",
+      "D": "largely irrelevant"
+    },
+    "correct_answer": "C",
+    "difficulty": 0.35,
+    "topic": "Verbal Reasoning",
+    "tags": ["reading comprehension", "inference", "author's tone"],
+    "explanation": "The author presents both benefits and drawbacks of industrialization, indicating a nuanced, ambivalent perspective."
+  },
+  {
+    "text": "If a set of numbers has a mean of 15 and includes the numbers {10, 12, 18, 20}, what is the fifth number?",
+    "options": {
+      "A": "13",
+      "B": "14",
+      "C": "15",
+      "D": "16"
+    },
+    "correct_answer": "C",
+    "difficulty": 0.4,
+    "topic": "Quantitative Reasoning",
+    "tags": ["statistics", "mean", "arithmetic"],
+    "explanation": "Total sum = 15 × 5 = 75. Sum of known numbers = 10+12+18+20 = 60. Fifth number = 75 - 60 = 15."
+  },
+  {
+    "text": "Which word best completes the sentence: 'The scientist's _______ approach to data collection ensured the validity of her findings.'",
+    "options": {
+      "A": "haphazard",
+      "B": "rigorous",
+      "C": "cursory",
+      "D": "arbitrary"
+    },
+    "correct_answer": "B",
+    "difficulty": 0.4,
+    "topic": "Verbal Reasoning",
+    "tags": ["vocabulary", "sentence completion", "context clues"],
+    "explanation": "'Rigorous' means thorough and careful, which aligns with ensuring validity. The other options imply carelessness."
+  },
+  {
+    "text": "If x² - 5x + 6 = 0, what are the values of x?",
+    "options": {
+      "A": "2 and 3",
+      "B": "1 and 6",
+      "C": "-2 and -3",
+      "D": "3 and 4"
+    },
+    "correct_answer": "A",
+    "difficulty": 0.45,
+    "topic": "Quantitative Reasoning",
+    "tags": ["algebra", "quadratic", "factoring"],
+    "explanation": "Factor as (x-2)(x-3) = 0, giving x = 2 and x = 3."
+  },
+  {
+    "text": "A rectangle has a perimeter of 36 cm and a length of 10 cm. What is its area?",
+    "options": {
+      "A": "60 cm²",
+      "B": "70 cm²",
+      "C": "80 cm²",
+      "D": "90 cm²"
+    },
+    "correct_answer": "C",
+    "difficulty": 0.5,
+    "topic": "Quantitative Reasoning",
+    "tags": ["geometry", "perimeter", "area"],
+    "explanation": "Perimeter = 2(l+w), so 36 = 2(10+w), meaning w = 8. Area = 10 × 8 = 80 cm²."
+  },
+  {
+    "text": "The author's use of the word 'ephemeral' in the third paragraph most likely serves to emphasize the _______ of the phenomenon described.",
+    "options": {
+      "A": "permanence",
+      "B": "transience",
+      "C": "complexity",
+      "D": "significance"
+    },
+    "correct_answer": "B",
+    "difficulty": 0.5,
+    "topic": "Verbal Reasoning",
+    "tags": ["vocabulary", "reading comprehension", "context"],
+    "explanation": "'Ephemeral' means lasting a very short time. It emphasizes the fleeting, transient nature of the phenomenon."
+  },
+  {
+    "text": "Column A: The number of prime factors of 60. Column B: The number of prime factors of 72. Which is greater?",
+    "options": {
+      "A": "Column A is greater",
+      "B": "Column B is greater",
+      "C": "Both columns are equal",
+      "D": "The relationship cannot be determined"
+    },
+    "correct_answer": "A",
+    "difficulty": 0.55,
+    "topic": "Quantitative Reasoning",
+    "tags": ["number theory", "prime factors", "quantitative comparison"],
+    "explanation": "60 = 2² × 3 × 5 has 3 distinct prime factors {2, 3, 5}. 72 = 2³ × 3² has 2 distinct prime factors {2, 3}. Column A (3) > Column B (2)."
+  },
+  {
+    "text": "If f(x) = 3x² - 2x + 1, what is f(2)?",
+    "options": {
+      "A": "7",
+      "B": "9",
+      "C": "11",
+      "D": "13"
+    },
+    "correct_answer": "B",
+    "difficulty": 0.55,
+    "topic": "Quantitative Reasoning",
+    "tags": ["algebra", "functions", "polynomial"],
+    "explanation": "f(2) = 3(4) - 2(2) + 1 = 12 - 4 + 1 = 9."
+  },
+  {
+    "text": "Select the pair of words that best expresses a relationship similar to PRODIGAL : THRIFT.",
+    "options": {
+      "A": "cowardly : bravery",
+      "B": "generous : charity",
+      "C": "frugal : savings",
+      "D": "bold : courage"
+    },
+    "correct_answer": "A",
+    "difficulty": 0.6,
+    "topic": "Verbal Reasoning",
+    "tags": ["analogy", "vocabulary", "antonyms"],
+    "explanation": "A prodigal person lacks thrift (wasteful ↔ frugality). Similarly, a cowardly person lacks bravery."
+  },
+  {
+    "text": "A circular pool has a radius of 7 meters. What is the area of the pool? (Use π ≈ 3.14)",
+    "options": {
+      "A": "143.8 m²",
+      "B": "153.86 m²",
+      "C": "163.8 m²",
+      "D": "173.8 m²"
+    },
+    "correct_answer": "B",
+    "difficulty": 0.6,
+    "topic": "Quantitative Reasoning",
+    "tags": ["geometry", "circles", "area"],
+    "explanation": "Area = π × r² = 3.14 × 49 = 153.86 m²."
+  },
+  {
+    "text": "The following argument contains a logical flaw. 'All philosophers are deep thinkers. Maria is a deep thinker. Therefore, Maria is a philosopher.' What type of fallacy is this?",
+    "options": {
+      "A": "Straw man",
+      "B": "Ad hominem",
+      "C": "Affirming the consequent",
+      "D": "False dichotomy"
+    },
+    "correct_answer": "C",
+    "difficulty": 0.7,
+    "topic": "Analytical Writing",
+    "tags": ["logic", "fallacies", "critical reasoning"],
+    "explanation": "This commits 'affirming the consequent': If P→Q, Q is true does not mean P is true. Being a deep thinker doesn't imply being a philosopher."
+  },
+  {
+    "text": "If the standard deviation of {4, 8, 12, 16, 20} is σ, what is the standard deviation of {8, 16, 24, 32, 40}?",
+    "options": {
+      "A": "σ",
+      "B": "2σ",
+      "C": "4σ",
+      "D": "σ + 4"
+    },
+    "correct_answer": "B",
+    "difficulty": 0.75,
+    "topic": "Quantitative Reasoning",
+    "tags": ["statistics", "standard deviation", "scaling"],
+    "explanation": "The second set is exactly 2× the first. Multiplying all values by a constant k multiplies the standard deviation by |k| = 2."
+  },
+  {
+    "text": "Which of the following best describes the rhetorical strategy in: 'We must act now — delay is not caution, it is complicity.'",
+    "options": {
+      "A": "Presenting a false dilemma to pressure the audience",
+      "B": "Using an appeal to authority to validate the claim",
+      "C": "Redefining inaction as a morally culpable act",
+      "D": "Employing statistical evidence to support urgency"
+    },
+    "correct_answer": "C",
+    "difficulty": 0.75,
+    "topic": "Verbal Reasoning",
+    "tags": ["rhetoric", "critical reading", "argumentation"],
+    "explanation": "The statement reframes delay (a passive act) as complicity (an active moral failure), raising the stakes of inaction."
+  },
+  {
+    "text": "In a geometric sequence where the first term is 3 and the common ratio is 4, what is the sum of the first 4 terms?",
+    "options": {
+      "A": "255",
+      "B": "260",
+      "C": "765",
+      "D": "1020"
+    },
+    "correct_answer": "A",
+    "difficulty": 0.8,
+    "topic": "Quantitative Reasoning",
+    "tags": ["sequences", "geometric series", "algebra"],
+    "explanation": "S_n = a(r^n - 1)/(r - 1) = 3(4⁴ - 1)/(4 - 1) = 3(256 - 1)/3 = 255."
+  },
+  {
+    "text": "A student scored in the 72nd percentile on an exam. Which statement is most accurate?",
+    "options": {
+      "A": "The student answered 72% of questions correctly.",
+      "B": "The student scored higher than 72% of all test-takers.",
+      "C": "The student's score was 72 points above the mean.",
+      "D": "72% of students scored higher than this student."
+    },
+    "correct_answer": "B",
+    "difficulty": 0.85,
+    "topic": "Quantitative Reasoning",
+    "tags": ["statistics", "percentile", "data interpretation"],
+    "explanation": "Percentile rank indicates relative standing. 72nd percentile means the student scored higher than 72% of test-takers."
+  },
+  {
+    "text": "Evaluate the argument: 'Country X has lower tax rates and higher GDP growth than Country Y. Therefore, lower taxes cause higher economic growth.' What is the primary weakness?",
+    "options": {
+      "A": "The sample size is too small to draw conclusions.",
+      "B": "Correlation is mistakenly presented as causation.",
+      "C": "The definition of GDP growth is ambiguous.",
+      "D": "The argument relies on an appeal to emotion."
+    },
+    "correct_answer": "B",
+    "difficulty": 0.9,
+    "topic": "Analytical Writing",
+    "tags": ["critical reasoning", "causation", "argumentation"],
+    "explanation": "The argument conflates correlation with causation. Many confounding variables (resources, institutions, trade) could explain the GDP difference."
+  },
+  {
+    "text": "If log₂(x) + log₂(x - 2) = 3, find x.",
+    "options": {
+      "A": "x = 4",
+      "B": "x = 3",
+      "C": "x = 2√2",
+      "D": "No real solution"
+    },
+    "correct_answer": "A",
+    "difficulty": 0.95,
+    "topic": "Quantitative Reasoning",
+    "tags": ["algebra", "logarithms", "equations"],
+    "explanation": "log₂(x(x-2)) = 3 → x(x-2) = 8 → x² - 2x - 8 = 0 → (x-4)(x+2) = 0. Since x > 2, x = 4."
+  },
+  {
+    "text": "Consider the argument: 'The most brilliant minds throughout history were largely self-educated autodidacts. Formal education, therefore, suppresses rather than cultivates genius.' The argument's conclusion would be most weakened by which finding?",
+    "options": {
+      "A": "Several recent Nobel laureates attended elite universities.",
+      "B": "Autodidacts tend to have higher fluid intelligence scores.",
+      "C": "Formal education was largely inaccessible to historical geniuses due to socioeconomic barriers.",
+      "D": "Self-directed learning increases intrinsic motivation."
+    },
+    "correct_answer": "C",
+    "difficulty": 1.0,
+    "topic": "Analytical Writing",
+    "tags": ["critical reasoning", "argument weakness", "logic"],
+    "explanation": "If historical geniuses were self-educated because formal education was unavailable to them — not because it suppresses genius — the causal claim collapses. This undermines the argument's core premise."
+  }
+]
