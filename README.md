@@ -20,7 +20,7 @@ A **1-Dimension Adaptive Testing** prototype that dynamically selects GRE-style 
 
 - Python 3.11+
 - MongoDB running locally (`mongodb://localhost:27017`) or a MongoDB Atlas URI
-- An Anthropic API key (for AI study plan generation)
+- A Groq API key — free at https://console.groq.com (or Gemini / Anthropic — configurable)
 
 ### 1. Clone and set up environment
 
@@ -58,9 +58,9 @@ uvicorn app.main:app --reload
 
 | URL | Description |
 |-----|-------------|
-| `http://localhost:8000` | **Student UI** (adaptive test interface) |
 | `http://localhost:8000/docs` | Interactive API documentation |
 | `http://localhost:8000/health` | Health check |
+| `http://localhost:8000` | *(Bonus)* Browser-based UI for live testing |
 
 ### 4. Seed the question bank
 
@@ -320,3 +320,20 @@ The prompt structure, JSON parsing, and fallback handling are identical across a
 2. **Pydantic v2 + PyObjectId**: The custom `PyObjectId` validator required implementing `__get_pydantic_core_schema__` for Pydantic v2 compatibility — an API change from v1 that Claude initially provided incorrect guidance on.
 
 3. **Session state atomicity**: Designing the `$set` + `$push` combination in a single `update_one` call to avoid race conditions was a judgment call based on application-level reasoning rather than AI suggestion.
+
+---
+
+## Bonus: Browser UI
+
+> **This was not required by the assignment.** It was built as an extra to make the API easier to demo and test interactively.
+
+A single-page interface (`frontend/index.html`) is served at `http://localhost:8000` when the server is running. It lets you run a full adaptive test session in the browser without needing curl or Postman.
+
+**What it shows:**
+- Live ability (θ) meter that updates after every answer
+- Question card with A/B/C/D options
+- Feedback panel with explanation and θ delta after each answer
+- AI study plan screen at the 10-question milestone
+- Final score summary with accuracy stats
+
+All API calls go to the same FastAPI server — no separate frontend server needed.
